@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { salutoedg, getUsers, getSpedizioni,getCustomers,
-        getCouriers,getCarriers,usersRenato,upload }
+import { salutoedg, getUsers, getSpedizioni,getCustomers,upload }
         from "../controllers/indexController.js";
 
 import checkAuth from "../middleware/checkAuth.js";
 
 const router = Router();
+
+router.use(checkAuth);
 
 // cancellare dopo
 router.get("/", ({req, res}) => {

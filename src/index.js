@@ -1,20 +1,17 @@
-// Invece di fare:
-// const express = require('express')
-// fare:
-// import express from 'express'
 
 import express from 'express';
 import dotenv from "dotenv";
 import cors from "cors";
 
-import indexRoutes from "./routes/indexRouter.js";
+import indexRouter from "./routes/indexRouter.js";
+import authRouter from "./routes/authRouter.js";
+import backendRouter from "./routes/backendRouter.js";
 
 const app = express();
 
 // Middlewares
 
 //dotenv.config();
-
 // CORS
 // const whitelist = ['http://localhost:5173'];
 // const corsOptions = {
@@ -34,11 +31,14 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(express.static('public'));
 
-app.use("/",indexRoutes);
+app.use("/api",indexRouter);
+app.use("/api/auth",authRouter);
+app.use("/api/backend",backendRouter);
 
 app.use((req, res, next) => {
-  res.status(404).json({ message: "Not found" });
+  res.status(404).json({ message: "Not foun2d" });
 });
 
 const port = process.env.PORT || 8080;
