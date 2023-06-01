@@ -3,8 +3,6 @@ import { salutoedg, getUsers, getSpedizioni,getCustomers,
         getCouriers,getCarriers,usersRenato,upload }
         from "../controllers/indexController.js";
 
-import checkAuth from "../middleware/checkAuth.js";
-
 const router = Router();
 
 // cancellare dopo

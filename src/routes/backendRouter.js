@@ -2,8 +2,6 @@ import { Router } from "express";
 import { salutoedg, getUsers, getSpedizioni,getCustomers,upload }
         from "../controllers/indexController.js";
 
-import { profilo } from "../controllers/utentiController.js";
-
 import checkAuth from "../middleware/checkAuth.js";
 
 const router = Router();
@@ -18,7 +16,7 @@ router.get("/message", salutoedg);
 router.get("/users", getUsers);
 router.get("/spedizioni", getSpedizioni);
 router.get("/customers", getCustomers);
-router.get("/profilo", profilo);
+
 
 //forse da finire
 router.get("/upload", upload);
