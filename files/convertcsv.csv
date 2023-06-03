@@ -1,0 +1,27 @@
+id,nome,dorsal,posicion,equipo
+0,Emiliano Martínez,23,POR,Aston Villa
+1,Gerónimo Rulli,12,POR,Villarreal
+2,Franco Armani,1,POR,River Plate
+3,Nahuel Molina,26,DEF,Atlético de Madrid
+4,Gonzalo Montiel,4,DEF,Sevilla
+5,Cristian Romero,13,DEF,Tottenham
+6,Germán Pezzella,6,DEF,Real Betis
+7,Nicolás Otamendi,19,DEF,Benfica
+8,Lisandro Martínez,25,DEF,Manchester United
+9,Marcos Acuña,8,DEF,Sevilla
+10,Nicolás Tagliafico,3,DEF,Olympique de Lyon
+11,Juan Foyth,2,DEF,Villarreal
+12,Rodrigo De Paul,7,MED,Atlético de Madrid
+13,Leandro Paredes,5,MED,Juventus
+14,Alexis Mac Allister,20,MED,Brighton
+15,Guido Rodríguez,18,MED,Betis
+16,Alejandro Gómez,15,MED,Sevilla
+17,Enzo Fernández,24,MED,Benfica
+18,Exequiel Palacios,14,MED,Bayer Leverkusen
+19,Thiago Almada,16,MED,Atlanta United
+20,Ángel Di María,11,DEL,Juventus
+21,Lautaro Martínez,22,DEL,Inter
+22,Julián Álvarez,9,DEL,Manchester City
+23,Paulo Dybala,21,DEL,Roma
+24,Ángel Correa,16,DEL,Atlético de Madrid
+25,Lionel Messi,10,DEL,PSG

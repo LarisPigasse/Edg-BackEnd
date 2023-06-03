@@ -1,7 +1,8 @@
 import { pool } from "../db.js"
-import multer from 'multer';
 import fs from 'fs';
-import path from 'path';
+import { fileURLToPath } from 'url';
+import path, { dirname } from 'path';
+import XLSX from 'xlsx'
 
 
 export const salutoedg = (req, res) => res.json({ message: "Un saluto dal server EDG" });
@@ -18,7 +19,6 @@ export const getUsers = async (req,res) => {
       res.status(404).json({ message: "Errore di conessione", error: error });
     }
 }
-
 
 export const getSpedizioni = async (req,res) => {
     try {
@@ -122,4 +122,61 @@ export const upload = async (req,res) => {
             // Gestisci il file qui
       });
       res.json({ message: 'Upload del file eseguito con successo'});
+}
+
+export const testfile = async (req,res) => {
+
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+
+  const folderPath = path.join(__dirname, '../../files');
+  const newFolderPath = path.join(__dirname, '../../files/caricati');
+
+  fs.readdir(folderPath, (err, files) => {
+    if (err) {
+      console.error('Error al leer la carpeta:', err);
+      return res.status(500).send('Error al leer la carpeta');
+    }
+
+    const elements = [];
+
+    files.forEach(file => {
+      const filePath = path.join(folderPath, file);
+      const isFolder = fs.statSync(filePath).isDirectory();
+      const props = fs.statSync(filePath);
+
+      elements.push({
+        nome: file,
+        isFolder: isFolder,
+        size: props.size,
+        dataUpdate: props.mtime
+      });
+
+      const pathFile = path.join(folderPath, file);
+      const newPathFile = path.join(newFolderPath, file);
+
+      if (!isFolder) {
+
+        const workbook = XLSX.readFile(folderPath+'/convertcsv.csv', { type: 'string', codepage: 65001 });
+        const data = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+        
+        data.map(row => {
+          console.log(row);
+          // insert or update RENATO
+        });
+
+        // fs.rename(pathFile, newPathFile, (err) => {
+        //   if (err) {
+        //     //console.error(`Error ${file}:`, err);
+        //     return;
+        //   }
+        //   //console.log(`File ${file} spostato correttamente`);
+        // });
+      }
+
+    });
+
+    res.json(elements);
+  });
+
 }

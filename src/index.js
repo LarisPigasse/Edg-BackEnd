@@ -38,8 +38,8 @@ app.use("/api/auth",authRouter);
 app.use("/api/backend",backendRouter);
 
 app.use((req, res, next) => {
-  res.status(404).json({ message: "Not foun2d" });
+  res.status(404).json({ message: "Not found..." });
 });
 
 const port = process.env.PORT || 8080;
-app.listen(port, () => console.log(`Il server è in ascolto sulla porta ${port}..`));
+app.listen(port, () => console.log(`Server ON Port: ${port}`));
