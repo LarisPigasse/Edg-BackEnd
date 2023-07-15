@@ -6,6 +6,7 @@ import cors from "cors";
 import indexRouter from "./routes/indexRouter.js";
 import authRouter from "./routes/authRouter.js";
 import backendRouter from "./routes/backendRouter.js";
+import operatoriRouter from "./routes/operatoriRouter.js";
 
 const app = express();
 
@@ -36,6 +37,8 @@ app.use(express.static('public'));
 app.use("/api",indexRouter);
 app.use("/api/auth",authRouter);
 app.use("/api/backend",backendRouter);
+app.use("/api/operatori",operatoriRouter);
+
 
 app.use((req, res, next) => {
   res.status(404).json({ message: "Not found..." });

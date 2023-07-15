@@ -43,13 +43,6 @@ export const login = async (req, res) => {
       return res.status(404).json({ ok:false, messagge: error.message });
     }
   
-    // // Comprobar si el usuario esta confirmado
-    // if (!usuario.confirmado) {
-    //   const error = new Error("Tu Cuenta no ha sido confirmada");
-    //   return res.status(403).json({ msg: error.message });
-    // }
-
-  
     // Verificare password
     if (await verifyPassword(password, result[0].password)) {
       res.status(200).json({
@@ -57,7 +50,8 @@ export const login = async (req, res) => {
         utente: {_id: result[0].id_account,
           account: result[0].account,
           email: result[0].email,
-          token: generarJWT(result[0].id_account)}
+          token: generarJWT(result[0].id_account)
+        }
       });
     } else {
       //const error = new Error("La password non è corretta");

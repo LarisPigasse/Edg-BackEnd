@@ -4,15 +4,86 @@ import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
 import XLSX from 'xlsx'
 
-
 export const salutoedg = (req, res) => res.json({ message: "Un saluto dal server EDG" });
+
+
+export const getOperatoriFilter = async (req, res) => {
+  try {
+    const { pageIndex, pageSize, sort, query } = req.query;
+
+    let ordinamento = {
+      order: '',
+      key: ''
+    }
+
+    if(sort){
+      ordinamento = JSON.parse(sort)
+    }
+   
+    let sql = 'SELECT * FROM operatori';
+    let where = '';
+    let countWhere = '';
+  
+    if (query) {
+      //where = 'WHERE operatore LIKE "%' + query + '%" OR email LIKE "%' + query + '%"';
+      where = ` WHERE operatore LIKE "%${query}%" OR email LIKE "%${query}%" `
+      countWhere = where;
+    }
+  
+    const limit = pageSize;
+    const offset = (pageIndex - 1) * pageSize;
+
+    let orderBy = '';
+    if (ordinamento.order != '' && ordinamento.key != '') {
+      orderBy = ` ORDER BY ${ordinamento.key} ${ordinamento.order}`
+
+    }
+  
+   sql += ' ' + where + ' ' + orderBy + ' LIMIT ' + limit + ' OFFSET ' + offset;
+  
+    const [result] = await pool.query(sql);
+    const operatori = result;
+
+    const countSql = 'SELECT COUNT(*) AS count FROM operatori ' + countWhere;
+    const countResult = await pool.query(countSql);
+    const count = countResult[0][0].count;
+
+
+    res.json({
+      total: count,
+      data: operatori
+    });
+
+
+    // let  where;
+    // if (query) {
+    //   where[Op.or] = [
+    //     { uuid_prodotto: { [Op.like]: `%${query}%` } },
+    //     { prodotto: { [Op.like]: `%${query}%` } }
+    //   ];
+    // }
+
+    // let options = optionsWhereTable({where, pageIndex, pageSize, sort})
+   
+    // const prodotti = await Prodotti.findAll(options);
+
+    // const count = await Prodotti.count(where);
+
+    // res.json({
+    //   total: count,
+    //   data: prodotti
+    // });
+  } catch (error) {
+    res.status(500).json({ error_msg: 'Errore getOperatoriFilter', error });
+  }
+}
 
 export const getUsers = async (req,res) => {
     try {
   
       const [result] = await pool.query(`SELECT * FROM operatori`);
   
-      res.json(result)
+      res.json({data:result, total: result.length})
       
     } catch (error) {
       console.log(error)

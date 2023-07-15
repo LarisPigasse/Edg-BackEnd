@@ -13,11 +13,11 @@ const checkAuth = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       req.utente = await returnUtente(decoded.id);
-      console.log(req.utente)
+      delete req.utente.password
 
       return next();
     } catch (error) {
-      return res.status(404).json({ msg: "Errore" });
+      return res.status(404).json({ msg: "Token non valido." });
     }
   }
 
