@@ -7,6 +7,8 @@ import indexRouter from "./routes/indexRouter.js";
 import authRouter from "./routes/authRouter.js";
 import backendRouter from "./routes/backendRouter.js";
 import operatoriRouter from "./routes/operatoriRouter.js";
+import accountRouter from "./routes/accountRouter.js";
+import clientiRouter from "./routes/clientiRouter.js";
 
 const app = express();
 
@@ -38,6 +40,8 @@ app.use("/api",indexRouter);
 app.use("/api/auth",authRouter);
 app.use("/api/backend",backendRouter);
 app.use("/api/operatori",operatoriRouter);
+app.use("/api/clienti",clientiRouter);
+app.use("/api/account",accountRouter);
 
 
 app.use((req, res, next) => {

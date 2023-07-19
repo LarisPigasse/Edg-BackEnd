@@ -12,8 +12,8 @@ const checkAuth = async (req, res, next) => {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.utente = await returnUtente(decoded.id);
-      delete req.utente.password
+      req.account = await returnUtente(decoded.id);
+      delete req.account.password
 
       return next();
     } catch (error) {
