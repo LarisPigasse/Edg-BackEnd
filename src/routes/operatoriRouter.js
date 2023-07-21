@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { insertOperatori, updateOperatori, getOperatori, getOperatore, 
-    deleteOperatori  }
+    deleteOperatori, getOperatoriFilter }
         from "../controllers/operatoriController.js";
 
 
@@ -14,6 +14,7 @@ router.use(checkAuth);
 router.post("/",  insertOperatori);
 
 router.get("/", getOperatori);
+router.get("/operatori-filter", getOperatoriFilter);
 router.get("/:id", getOperatore);
 router.put("/:id", updateOperatori);
 router.delete("/:id", deleteOperatori);
