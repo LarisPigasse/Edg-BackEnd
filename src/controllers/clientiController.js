@@ -7,7 +7,7 @@ export const insertClienti = async (req,res) => {
      // let uuid = getUUID();
       const [result] = await pool.query(
           `INSERT INTO clienti (cliente, indirizzo, citta, cap, provincia, telefono, email,partita_iva ,codice_fiscale, responsabile ,stato)
-                        VALUES (?, ?, ?, ?,?,?, ?, ?,?,?)`,
+                        VALUES (?, ?, ?, ?,?,?, ?, ?,?,?,?)`,
           [cliente, indirizzo, citta, cap, provincia, telefono, email,partita_iva ,codice_fiscale, responsabile ,stato]
       );
       const id = result.insertId;
@@ -84,5 +84,57 @@ export const getCliente = async (req,res) => {
   } catch (error) {
     console.log(error)
     res.status(500).json({ message: "Errore", error: error });
+  }
+}
+
+
+export const getClientiFilter = async (req, res) => {
+  try {
+    const { pageIndex, pageSize, sort, query } = req.query;
+
+    let ordinamento = {
+      order: '',
+      key: ''
+    }
+
+    if(sort){
+      ordinamento = JSON.parse(sort)
+    }
+   
+    let sql = 'SELECT * FROM clienti';
+    let where = '';
+    let countWhere = '';
+  
+    if (query) {
+      where = ` WHERE cliente LIKE "%${query}%" OR email LIKE "%${query}%" `
+      countWhere = where;
+    }
+  
+    const limit = pageSize;
+    const offset = (pageIndex - 1) * pageSize;
+
+    let orderBy = '';
+    if (ordinamento.order != '' && ordinamento.key != '') {
+      orderBy = ` ORDER BY ${ordinamento.key} ${ordinamento.order}`
+
+    }
+  
+   sql += ' ' + where + ' ' + orderBy + ' LIMIT ' + limit + ' OFFSET ' + offset;
+  
+    const [result] = await pool.query(sql);
+    const operatori = result;
+
+    const countSql = 'SELECT COUNT(*) AS count FROM clienti ' + countWhere;
+    const countResult = await pool.query(countSql);
+    const count = countResult[0][0].count;
+
+
+    res.json({
+      total: count,
+      data: operatori
+    });
+
+  } catch (error) {
+    res.status(500).json({ error_msg: 'Errore getClientiFilter', error });
   }
 }

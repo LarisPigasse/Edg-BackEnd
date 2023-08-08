@@ -9,7 +9,7 @@ import checkAuth from "../middleware/checkAuth.js";
 
 const router = Router();
 
-router.use(checkAuth);
+//router.use(checkAuth);
 
 router.post("/",  insertOperatori);
 
