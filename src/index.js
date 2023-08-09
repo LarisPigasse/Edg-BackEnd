@@ -9,6 +9,7 @@ import backendRouter from "./routes/backendRouter.js";
 import operatoriRouter from "./routes/operatoriRouter.js";
 import accountRouter from "./routes/accountRouter.js";
 import clientiRouter from "./routes/clientiRouter.js";
+import spedizioniRouter from "./routes/spedizioniRouter.js";
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use("/api/backend",backendRouter);
 app.use("/api/operatori",operatoriRouter);
 app.use("/api/clienti",clientiRouter);
 app.use("/api/account",accountRouter);
+app.use("/api/spedizioni",spedizioniRouter);
 
 
 app.use((req, res, next) => {

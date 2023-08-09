@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { insertSpedizioni, updateSpedizione, getSpedizioni, getSpedizione, 
-    deleteSpedizioni, getSpedizioniFilter, getSpedizioniCliente }
+    deleteSpedizioni, getSpedizioniFilter, getSpedizioniCliente,importaEsiti }
         from "../controllers/spedizioniController.js";
 
 
@@ -13,6 +13,7 @@ const router = Router();
 
 router.post("/",  insertSpedizioni);
 
+router.get("/importa", importaEsiti);
 router.get("/", getSpedizioni);
 router.get("/spedizioni-filter", getSpedizioniFilter);
 router.get("/:id", getSpedizione);

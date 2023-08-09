@@ -1,5 +1,41 @@
 import { pool } from "../db.js"
 
+import { apiDashser } from "../helpers/apiCorrieri.js";
+
+import dotenv from "dotenv";
+
+export const importaEsiti = async (req, res) => {
+
+  dotenv.config();
+
+  // query che prende tutte le spedizioni in base a qualcosa.
+  try {
+
+    const [result] = await pool.query('SELECT * FROM spedizioni');
+    let ok = '';
+    
+    
+    result.map((r, index)=>{
+    
+    
+    
+      ok += r.altro_numero
+    
+    
+    })
+
+    res.json(ok);
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "Errore", error: error });
+  }
+
+  return;
+  let barcode = "04930755679"
+
+  let result = await apiDashser(barcode);
+
+}
 export const insertSpedizioni = async (req,res) => {
     try {
         const { id_cliente, id_spedizione, id_corriere, id_vettore, data_spedizione, quantita, peso_kg, peso_misurato, peso_volume, volume_misurato, 
