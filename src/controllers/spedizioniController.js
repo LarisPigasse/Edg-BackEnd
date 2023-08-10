@@ -1,6 +1,6 @@
 import { pool } from "../db.js"
 
-import { apiDashser } from "../helpers/apiCorrieri.js";
+import { splitCorrieri, apiDashser} from "../helpers/apiCorrieri.js";
 
 import dotenv from "dotenv";
 
@@ -12,18 +12,24 @@ export const importaEsiti = async (req, res) => {
   try {
 
     const [result] = await pool.query('SELECT * FROM spedizioni');
-    let ok = '';
+    let ok;
     
     
-    result.map((r, index)=>{
+    let da_eseguire = result.map(async (r, index)=>{
     
-    
-    
-      ok += r.altro_numero
-    
+      if (r.id_corriere == 1) {
+
+        return await splitCorrieri(r.id_corriere, r.altro_numero);
+       
+      }else{
+        return false;
+      }
     
     })
 
+     ok = await Promise.all(da_eseguire);
+    
+    //ok = await apiDashser( "04930755679");
     res.json(ok);
   } catch (error) {
     console.log(error)
@@ -33,7 +39,7 @@ export const importaEsiti = async (req, res) => {
   return;
   let barcode = "04930755679"
 
-  let result = await apiDashser(barcode);
+  //let result = await apiDashser(barcode);
 
 }
 export const insertSpedizioni = async (req,res) => {

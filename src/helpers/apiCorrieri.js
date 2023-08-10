@@ -7,7 +7,7 @@ export const apiDashser = async (codice_spedizione) => {
     dotenv.config();
   
     //let barcode = "04930755679"
-  
+
     let result = await apiFetch({
       url:`https://api-gateway.dachser.com/rest/v2/shipmentstatus?tracking-number=${codice_spedizione}`,
       headers: {
@@ -17,4 +17,10 @@ export const apiDashser = async (codice_spedizione) => {
     });
   
    return result;
+}
+
+
+export const splitCorrieri = async (id_corriere, altro_numero) => {
+
+  return await apiDashser(altro_numero)
 }
