@@ -1,12 +1,12 @@
 import { apiFetch } from "../helpers/apiFetch.js";
 
+import { aggiornaEsiti } from "../controllers/spedizioniController.js"
+
 import dotenv from "dotenv";
 
 export const apiDashser = async (codice_spedizione) => {
 
     dotenv.config();
-  
-    //let barcode = "04930755679"
 
     let result = await apiFetch({
       url:`https://api-gateway.dachser.com/rest/v2/shipmentstatus?tracking-number=${codice_spedizione}`,
@@ -15,12 +15,23 @@ export const apiDashser = async (codice_spedizione) => {
         'X-API-KEY': process.env.TOKEN_DACHSER
       }
     });
+
+    let tracking = result.shipments[0].status[0].event.description; //
+    let data_tracking = result.shipments[0].status[0].statusDate;
   
+    aggiornaEsiti(codice_spedizione, tracking, data_tracking);
+
    return result;
 }
 
 
 export const splitCorrieri = async (id_corriere, altro_numero) => {
 
-  return await apiDashser(altro_numero)
+  switch (id_corriere) {
+    case 1:
+      return await apiDashser(altro_numero)
+    default:
+      return false;
+  }
+
 }

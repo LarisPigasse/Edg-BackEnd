@@ -1,6 +1,6 @@
 import { pool } from "../db.js"
 
-import { splitCorrieri, apiDashser} from "../helpers/apiCorrieri.js";
+import { splitCorrieri} from "../helpers/apiCorrieri.js";
 
 import dotenv from "dotenv";
 
@@ -11,20 +11,12 @@ export const importaEsiti = async (req, res) => {
   // query che prende tutte le spedizioni in base a qualcosa.
   try {
 
-    const [result] = await pool.query('SELECT * FROM spedizioni');
+    const [result] = await pool.query('SELECT * FROM spedizioni where data_spedizione > "2023-04-22"');
     let ok;
     
     
     let da_eseguire = result.map(async (r, index)=>{
-    
-      if (r.id_corriere == 1) {
-
         return await splitCorrieri(r.id_corriere, r.altro_numero);
-       
-      }else{
-        return false;
-      }
-    
     })
 
      ok = await Promise.all(da_eseguire);
@@ -40,8 +32,47 @@ export const importaEsiti = async (req, res) => {
   let barcode = "04930755679"
 
   //let result = await apiDashser(barcode);
-
 }
+export const archiviaSpedizioni = async (req,res) => {
+
+  try {
+      const [result] = await pool.query(
+          `UPDATE spedizioni SET archiviata = 'SI'
+                WHERE data_spedizione < DATE_SUB(CURDATE(), INTERVAL 10 DAY) and archiviata = 'NO' AND id_cliente = 1 `  );
+
+      if (result.affectedRows === 0) {
+        res.status(200).json({ ok:true, message: 'Aggiornamento eseguito'});
+        return
+      }
+      res.status(200).json({ ok:true, message: 'Aggiornamento eseguito, non ci sono righe da aggiornare'});
+
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ ok:false, message: 'Server error'})
+  }
+}
+
+export const aggiornaEsiti = async (req,res) => {
+  try {
+      const [result] = await pool.query(
+          `UPDATE spedizioni SET  tracking = ?, data_tracking = ?
+                WHERE altro_numero = ? `,
+          [tracking, data_tracking,codice_altro]
+      );
+
+      if (result.affectedRows === 0) {
+          return true
+      }
+      return false
+
+  } catch (err) {
+      console.error(err);
+      return false;
+      //res.status(500).json({ ok:false, message: 'Server error'})
+  }
+}
+
+
 export const insertSpedizioni = async (req,res) => {
     try {
         const { id_cliente, id_spedizione, id_corriere, id_vettore, data_spedizione, quantita, peso_kg, peso_misurato, peso_volume, volume_misurato, 
