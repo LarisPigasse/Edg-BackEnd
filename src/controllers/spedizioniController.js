@@ -11,17 +11,15 @@ export const importaEsiti = async (req, res) => {
   // query che prende tutte le spedizioni in base a qualcosa.
   try {
 
-    const [result] = await pool.query('SELECT * FROM spedizioni where data_spedizione > "2023-04-22"');
+    const [result] = await pool.query('SELECT * FROM spedizioni where archiviata = "NO"');
     let ok;
-    
-    
+
     let da_eseguire = result.map(async (r, index)=>{
         return await splitCorrieri(r.id_corriere, r.altro_numero);
     })
 
      ok = await Promise.all(da_eseguire);
-    
-    //ok = await apiDashser( "04930755679");
+
     res.json(ok);
   } catch (error) {
     console.log(error)
@@ -29,9 +27,7 @@ export const importaEsiti = async (req, res) => {
   }
 
   return;
-  let barcode = "04930755679"
-
-  //let result = await apiDashser(barcode);
+  //let barcode = "04930755679"
 }
 export const archiviaSpedizioni = async (req,res) => {
 
@@ -41,11 +37,11 @@ export const archiviaSpedizioni = async (req,res) => {
                 WHERE data_spedizione < DATE_SUB(CURDATE(), INTERVAL 10 DAY) and archiviata = 'NO' AND id_cliente = 1 `  );
 
       if (result.affectedRows === 0) {
-        res.status(200).json({ ok:true, message: 'Aggiornamento eseguito'});
+        res.status(200).json({ ok:true, message: 'Non ci sono righe da aggiornare'});
         return
       }
-      res.status(200).json({ ok:true, message: 'Aggiornamento eseguito, non ci sono righe da aggiornare'});
-
+      res.status(200).json({ ok:true, message: 'Aggiornamento eseguito'}) ;
+      
   } catch (err) {
       console.error(err);
       res.status(500).json({ ok:false, message: 'Server error'})
@@ -61,9 +57,9 @@ export const aggiornaEsiti = async (req,res) => {
       );
 
       if (result.affectedRows === 0) {
-          return true
+          return false
       }
-      return false
+      return true
 
   } catch (err) {
       console.error(err);

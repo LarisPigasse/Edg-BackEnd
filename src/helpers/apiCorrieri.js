@@ -4,7 +4,7 @@ import { aggiornaEsiti } from "../controllers/spedizioniController.js"
 
 import dotenv from "dotenv";
 
-export const apiDashser = async (codice_spedizione) => {
+export const apiDachser = async (codice_spedizione) => {
 
     dotenv.config();
 
@@ -18,7 +18,7 @@ export const apiDashser = async (codice_spedizione) => {
 
     let tracking = result.shipments[0].status[0].event.description; //
     let data_tracking = result.shipments[0].status[0].statusDate;
-  
+
     aggiornaEsiti(codice_spedizione, tracking, data_tracking);
 
    return result;
@@ -29,7 +29,7 @@ export const splitCorrieri = async (id_corriere, altro_numero) => {
 
   switch (id_corriere) {
     case 1:
-      return await apiDashser(altro_numero)
+      return await apiDachser(altro_numero)
     default:
       return false;
   }
