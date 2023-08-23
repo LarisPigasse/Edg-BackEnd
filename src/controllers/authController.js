@@ -25,7 +25,8 @@ export const login = async (req, res) => {
           utente: {_id: result[0].id_account,
             account: result[0].account,
             email: result[0].email,
-            token: generarJWT(result[0].id_account)
+            token: generarJWT(result[0].id_account),
+            tipo_account:result[0].tipo_account
           }
         });
       } else {
