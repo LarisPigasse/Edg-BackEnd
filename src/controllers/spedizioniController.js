@@ -302,7 +302,7 @@ export const insertSpedizioni = async (req,res) => {
       const [result] = await pool.query(sql);
       const operatori = result;
   
-      const countSql = 'SELECT COUNT(*) AS count FROM spedizioni ' + countWhere;
+      const countSql = `SELECT COUNT(*) AS count FROM spedizioni WHERE (id_cliente = ${id_cliente} ) ` + countWhere;
       const countResult = await pool.query(countSql);
       const count = countResult[0][0].count;
   
@@ -355,7 +355,7 @@ export const insertSpedizioni = async (req,res) => {
       const [result] = await pool.query(sql);
       const operatori = result;
   
-      const countSql = 'SELECT COUNT(*) AS count FROM spedizioni ' + countWhere;
+      const countSql = `SELECT COUNT(*) AS count FROM spedizioni WHERE (id_cliente = ${id_cliente} AND archiviata = 'SI') ` + countWhere;
       const countResult = await pool.query(countSql);
       const count = countResult[0][0].count;
   
