@@ -263,3 +263,109 @@ export const insertSpedizioni = async (req,res) => {
       res.status(500).json({ error_msg: 'Errore getSpedizioniFilter', error });
     }
   }
+
+  export const getSpedizioniClientiFilter = async (req, res) => {
+    try {
+      const { pageIndex, pageSize, sort, query } = req.query;
+
+      let id_cliente = req.account.id_cliente;
+  
+      let ordinamento = {
+        order: '',
+        key: ''
+      }
+  
+      if(sort){
+        ordinamento = JSON.parse(sort)
+      }
+     
+      let sql = `SELECT * FROM spedizioni WHERE (id_cliente = ${id_cliente} )`;
+      let where = '';
+      let countWhere = '';
+    
+      if (query) {
+        where = ` AND destinatario LIKE "%${query}%" `
+        countWhere = where;
+      }
+    
+      const limit = pageSize;
+      const offset = (pageIndex - 1) * pageSize;
+  
+      let orderBy = '';
+      if (ordinamento.order != '' && ordinamento.key != '') {
+        orderBy = ` ORDER BY ${ordinamento.key} ${ordinamento.order}`
+  
+      }
+    
+     sql += ' ' + where + ' ' + orderBy + ' LIMIT ' + limit + ' OFFSET ' + offset;
+    
+      const [result] = await pool.query(sql);
+      const operatori = result;
+  
+      const countSql = 'SELECT COUNT(*) AS count FROM spedizioni ' + countWhere;
+      const countResult = await pool.query(countSql);
+      const count = countResult[0][0].count;
+  
+  
+      res.json({
+        total: count,
+        data: operatori
+      });
+  
+    } catch (error) {
+      res.status(500).json({ error_msg: 'Errore getSpedizioniFilter', error });
+    }
+  }
+
+  export const getSpedizioniClientiArchiviateFilter = async (req, res) => {
+    try {
+      const { pageIndex, pageSize, sort, query } = req.query;
+
+      let id_cliente = req.account.id_cliente;
+  
+      let ordinamento = {
+        order: '',
+        key: ''
+      }
+  
+      if(sort){
+        ordinamento = JSON.parse(sort)
+      }
+     
+      let sql = `SELECT * FROM spedizioni WHERE (id_cliente = ${id_cliente} AND archiviata = 'SI')`;
+      let where = '';
+      let countWhere = '';
+    
+      if (query) {
+        where = ` AND destinatario LIKE "%${query}%" `
+        countWhere = where;
+      }
+    
+      const limit = pageSize;
+      const offset = (pageIndex - 1) * pageSize;
+  
+      let orderBy = '';
+      if (ordinamento.order != '' && ordinamento.key != '') {
+        orderBy = ` ORDER BY ${ordinamento.key} ${ordinamento.order}`
+  
+      }
+    
+     sql += ' ' + where + ' ' + orderBy + ' LIMIT ' + limit + ' OFFSET ' + offset;
+    
+      const [result] = await pool.query(sql);
+      const operatori = result;
+  
+      const countSql = 'SELECT COUNT(*) AS count FROM spedizioni ' + countWhere;
+      const countResult = await pool.query(countSql);
+      const count = countResult[0][0].count;
+  
+  
+      res.json({
+        total: count,
+        data: operatori
+      });
+  
+    } catch (error) {
+      res.status(500).json({ error_msg: 'Errore getSpedizioniFilter', error });
+    }
+  }
