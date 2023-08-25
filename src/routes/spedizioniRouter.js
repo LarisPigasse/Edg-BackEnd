@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { insertSpedizioni, updateSpedizione, getSpedizioni, getSpedizione, 
-    deleteSpedizioni, getSpedizioniFilter, getSpedizioniCliente,importaEsiti,archiviaSpedizioni }
+    deleteSpedizioni, getSpedizioniFilter, getSpedizioniCliente,importaEsiti,archiviaSpedizioni, getSpedizioniClienti, getSpedizioniClientiArchiviate }
         from "../controllers/spedizioniController.js";
 
 
@@ -9,9 +9,12 @@ import checkAuth from "../middleware/checkAuth.js";
 
 const router = Router();
 
-//router.use(checkAuth);
+router.use(checkAuth);
 
 router.post("/",  insertSpedizioni);
+
+router.get("/spedizioni-clienti", getSpedizioniClienti);
+router.get("/spedizioni-clienti-archiviate", getSpedizioniClientiArchiviate);
 
 router.put("/archivia-spedizione", archiviaSpedizioni);
 router.get("/importa", importaEsiti);

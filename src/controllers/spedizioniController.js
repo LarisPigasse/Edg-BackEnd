@@ -4,6 +4,41 @@ import { splitCorrieri} from "../helpers/apiCorrieri.js";
 
 import dotenv from "dotenv";
 
+// start spedizioni clienti
+
+export const getSpedizioniClienti = async (req,res) => {
+
+  try {
+
+    let id_cliente = req.account.id_cliente;
+
+    const [result] = await pool.query('SELECT *, DATE_FORMAT(data_spedizione, "%d/%m/%Y") as data_spedizione_format FROM spedizioni WHERE id_cliente = ? and archiviata = "NO"', [id_cliente]);
+  
+    res.json(result);
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "Errore", error: error });
+  }
+}
+
+export const getSpedizioniClientiArchiviate = async (req,res) => {
+
+  try {
+
+    let id_cliente = req.account.id_cliente;
+
+    const [result] = await pool.query('SELECT *, DATE_FORMAT(data_spedizione, "%d/%m/%Y") as data_spedizione_format FROM spedizioni WHERE id_cliente = ? and archiviata = "SI"', [id_cliente]);
+
+    res.json(result);
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "Errore", error: error });
+  }
+}
+
+
+// end spedizioni clienti
+
 export const importaEsiti = async (req, res) => {
 
   dotenv.config();
@@ -67,7 +102,6 @@ export const aggiornaEsiti = async (req,res) => {
       //res.status(500).json({ ok:false, message: 'Server error'})
   }
 }
-
 
 export const insertSpedizioni = async (req,res) => {
     try {
@@ -134,7 +168,7 @@ export const insertSpedizioni = async (req,res) => {
 
     try {
   
-      const [result] = await pool.query('SELECT * FROM spedizioni');
+      const [result] = await pool.query('SELECT *, DATE_FORMAT(data_spedizione, "%d/%m/%Y") as data_spedizione_format FROM spedizioni');
   
       res.json(result);
     } catch (error) {
@@ -142,7 +176,6 @@ export const insertSpedizioni = async (req,res) => {
       res.status(500).json({ message: "Errore", error: error });
     }
   }
-
 
   export const getSpedizione = async (req,res) => {
     try {
