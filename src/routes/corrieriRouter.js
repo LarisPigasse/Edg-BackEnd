@@ -2,7 +2,7 @@ import { Router } from "express";
 
 import { insertCorrieri, updateCorrieri, getCorrieri, getCorriere, 
     deleteCorrieri, getCorrieriFilter }
-        from "../controllers/clientiController.js";
+        from "../controllers/corrieriController.js";
 
 import checkAuth from "../middleware/checkAuth.js";
 

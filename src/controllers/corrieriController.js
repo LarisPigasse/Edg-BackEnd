@@ -1,6 +1,6 @@
 import { pool } from "../db.js"
 
-export const insertCorriere = async (req, res) => {
+export const insertCorrieri = async (req, res) => {
   try {
     const { corriere, endpoint, stato } = req.body;
 
@@ -18,7 +18,7 @@ export const insertCorriere = async (req, res) => {
   }
 }
 
-export const updateCorriere = async (req, res) => {
+export const updateCorrieri = async (req, res) => {
   try {
     const { corriere, endpoint, stato } = req.body;
 
