@@ -92,6 +92,58 @@ export const getAccount = async (req,res) => {
 }
 
 
+export const getAccountFilter = async (req, res) => {
+  try {
+    const { pageIndex, pageSize, sort, query } = req.query;
+
+    let ordinamento = {
+      order: '',
+      key: ''
+    }
+
+    if(sort){
+      ordinamento = JSON.parse(sort)
+    }
+   
+    let sql = 'SELECT * FROM account';
+    let where = '';
+    let countWhere = '';
+  
+    if (query) {
+      where = ` WHERE account LIKE "%${query}%" OR email LIKE "%${query}%" `
+      countWhere = where;
+    }
+  
+    const limit = pageSize;
+    const offset = (pageIndex - 1) * pageSize;
+
+    let orderBy = '';
+    if (ordinamento.order != '' && ordinamento.key != '') {
+      orderBy = ` ORDER BY ${ordinamento.key} ${ordinamento.order}`
+
+    }
+  
+   sql += ' ' + where + ' ' + orderBy + ' LIMIT ' + limit + ' OFFSET ' + offset;
+  
+    const [result] = await pool.query(sql);
+    const account = result;
+
+    const countSql = 'SELECT COUNT(*) AS count FROM account ' + countWhere;
+    const countResult = await pool.query(countSql);
+    const count = countResult[0][0].count;
+
+
+    res.json({
+      total: count,
+      data: account
+    });
+
+  } catch (error) {
+    res.status(500).json({ error_msg: 'Errore getAccountFilter', error });
+  }
+}
+
+
 export const returnAccount = async (id_account) => {
     try {
       const [result] = await pool.query(`SELECT * FROM account WHERE id_account = ?`,[id_account]);
@@ -125,4 +177,4 @@ export const updatePasswordAccount = async (req, res) => {
       console.error(error);
       res.status(500).json({ ok:false, message: 'Errore', error: error});
     }
-  }
+}

@@ -10,6 +10,7 @@ import operatoriRouter from "./routes/operatoriRouter.js";
 import accountRouter from "./routes/accountRouter.js";
 import clientiRouter from "./routes/clientiRouter.js";
 import spedizioniRouter from "./routes/spedizioniRouter.js";
+import corrieriRouter from "./routes/corrieriRouter.js";
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use("/api/operatori",operatoriRouter);
 app.use("/api/clienti",clientiRouter);
 app.use("/api/account",accountRouter);
 app.use("/api/spedizioni",spedizioniRouter);
+app.use("/api/corrieri",corrieriRouter);
 
 
 app.use((req, res, next) => {
