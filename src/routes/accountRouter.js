@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { insertAccount, updateAccount, getAccounts, getAccount, 
-    deleteAccount, updatePasswordAccount }
+    deleteAccount, updatePasswordAccount, getAccountFilter }
         from "../controllers/accountController.js";
 
 
@@ -14,6 +14,7 @@ router.use(checkAuth);
 router.post("/",  insertAccount);
 
 router.get("/", getAccounts);
+router.get("/account-filter", getAccountFilter);
 router.get("/:id", getAccount);
 router.put("/:id", updateAccount);
 router.delete("/:id", deleteAccount);
