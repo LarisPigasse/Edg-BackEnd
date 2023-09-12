@@ -226,7 +226,9 @@ export const insertSpedizioni = async (req,res) => {
         ordinamento = JSON.parse(sort)
       }
      
-      let sql = 'SELECT * FROM spedizioni';
+      let sql = `SELECT spedizioni.*, clienti.cliente, corrieri.corriere FROM spedizioni  
+                LEFT JOIN clienti ON clienti.id_cliente = spedizioni.id_cliente
+                LEFT JOIN corrieri ON corrieri.id_corriere = spedizioni.id_corriere`;
       let where = '';
       let countWhere = '';
     
